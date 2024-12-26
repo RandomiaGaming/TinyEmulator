@@ -1,0 +1,37 @@
+# Tiny Emulator
+MemSpec:
+at 0x0000 struct Inputs sizeof(1) {
+	BIT Up; // W
+	BIT Down; // S
+	BIT Left; // A
+	BIT Right; // D
+	BIT Jump; // Space
+	BIT Action; // J
+	BIT SpecialA; // K
+	BIT SpecialB; // L
+}
+at 0x0001 struct SysFlags sizeof(1) {
+	BIT 
+}
+
+VideoMode - Bitmap With Pallet {
+	// 64 R8G8B8 colors in a pallet.
+	256 * 144 * (6 / 8) = 27648 // Bytes of pixel data.
+	(2^6) * 3 = 192 // Bytes of pallet data.
+	27648 + 192 = 27840 // Bytes of total data. 42.5% of total memory.
+}
+
+VideoMode - Tiles {
+	// 256 4x4 R8G8B8 tiles used on a grid.
+	(256 / 4) * (144 / 4) = 2304 // Bytes of tile data.
+	4 * 4 * 3 * 256 = 12288 // Bytes of tile table data.
+	2304 + 12288 = 14592 // Bytes of total data. 22.3% of total memory.
+}
+
+VideoMode - Shader Graph {
+	// 64 4x4 R8G8B8 sprites instanced in 1024 different positions.
+	3 = 3 // Bytes of background color.
+	(2 + (6 / 8)) * 1024 = 2816 // Bytes of transform data.
+	4 * 4 * 3 * 64 = 3072 // Bytes of sprite data.
+	3 + 2816 + 3072 = 5891 // Bytes of total data. 8.99% of total memory.
+}
